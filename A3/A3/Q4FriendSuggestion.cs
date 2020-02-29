@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Lucene.Net.Util;
+using Priority_Queue;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,8 @@ namespace A3
 {
 	public class Q4FriendSuggestion : Processor
 	{
-		public Q4FriendSuggestion(string testDataName) : base(testDataName) {
+		public Q4FriendSuggestion(string testDataName) : base(testDataName)
+		{
 			//ExcludeTestCaseRangeInclusive(1, 3);
 			//this.ExcludeTestCaseRangeInclusive(5, 50);
 		}
@@ -71,21 +74,32 @@ namespace A3
 				proc = new List<long>();
 				reverseProc = new List<long>();
 
-				BinaryHeap distance = new BinaryHeap(s, NodeCount);
-				BinaryHeap reverseDistance = new BinaryHeap(t, NodeCount);
+				//BinaryHeap distance = new BinaryHeap(s, NodeCount);
+				//BinaryHeap reverseDistance = new BinaryHeap(t, NodeCount);
+				SimplePriorityQueue<long, long> distanceHeap = new SimplePriorityQueue<long, long>();
+				SimplePriorityQueue<long, long> reverseDistanceHeap = new SimplePriorityQueue<long, long>();
+				for (int i = 0; i < NodeCount; i++)
+				{
+					distanceHeap.Enqueue(i, int.MaxValue);
+					reverseDistanceHeap.Enqueue(i, int.MaxValue);
+				}
+				distanceHeap.UpdatePriority(s, 0);
+				reverseDistanceHeap.UpdatePriority(t, 0);
 
 				while (true)
 				{
-					long v = distance.ExtractMin();
-					Process(v, graphEdges, dist, prev, proc,distance);
+					//long v = distance.ExtractMin();
+					long v = distanceHeap.Dequeue();
+					Process(v, graphEdges, dist, prev, proc, distanceHeap);
 					if (reverseProc.Contains(v))
 					{
 						result[idx] = ShortestPath(s, dist, prev, proc, t, reverseDist, reversePrev, reverseProc);
 						break;
 					}
 
-					long reverseV = reverseDistance.ExtractMin();
-					Process(reverseV, reverseGraphEdges, reverseDist, reversePrev, reverseProc, reverseDistance);
+					//long reverseV = reverseDistanceHeap.ExtractMin();
+					long reverseV = reverseDistanceHeap.Dequeue();
+					Process(reverseV, reverseGraphEdges, reverseDist, reversePrev, reverseProc, reverseDistanceHeap);
 					if (proc.Contains(reverseV))
 					{
 						//result[idx] = ShortestPath(t, reverseDist, reversePrev, reverseProc, s, dist, prev, proc);
@@ -95,18 +109,18 @@ namespace A3
 				}
 				idx += 1;
 			}
-					   
+
 			return result;
 		}
 
-		public void Process(long u, List<Tuple<long, long>>[] graphEdges, long[] dist, long[] prev, List<long> proc, BinaryHeap heap)
+		public void Process(long u, List<Tuple<long, long>>[] graphEdges, long[] dist, long[] prev, List<long> proc, SimplePriorityQueue<long, long> heap)
 		{
 			foreach (var e in graphEdges[u])
 				Relax(u, e, dist, prev, heap);
 			proc.Add(u);
 		}
 
-		public void Relax(long u, Tuple<long, long> e, long[] dist, long[] prev, BinaryHeap heap)
+		public void Relax(long u, Tuple<long, long> e, long[] dist, long[] prev, SimplePriorityQueue<long, long> heap)
 		{
 			long v = e.Item1;
 			long w = e.Item2;
@@ -115,7 +129,8 @@ namespace A3
 			{
 				dist[v] = dist[u] + w;
 				prev[v] = u;
-				heap.ChangePriority(v, dist[v]);
+				//heap.ChangePriority(v, dist[v]);
+				heap.UpdatePriority(v, dist[v]);
 			}
 		}
 
@@ -125,23 +140,19 @@ namespace A3
 			long distance = int.MaxValue;
 			long uBest = 0;
 
-			//this part might be wrong
-			foreach(var u in proc.Concat(procR))
+			foreach (var u in proc.Concat(procR))
 			{
-				//if (procR.Contains(u))
+				if (dist[u] + distR[u] < distance)
 				{
-					if(dist[u] + distR[u] < distance)
-					{
-						uBest = u;
-						distance = dist[u] + distR[u];
-					}
+					uBest = u;
+					distance = dist[u] + distR[u];
 				}
 			}
 			return distance != int.MaxValue ? distance : -1;
 		}
 	}
 
-	public class BinaryHeap
+	/*public class BinaryHeap
 	{
 		public List<Tuple<long, long>> Heap;
 
@@ -222,5 +233,5 @@ namespace A3
 			SiftDown(0);
 			return res;
 		}
-	}
+	}*/
 }

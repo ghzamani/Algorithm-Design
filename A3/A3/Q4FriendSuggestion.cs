@@ -12,10 +12,7 @@ namespace A3
 	public class Q4FriendSuggestion : Processor
 	{
 		public Q4FriendSuggestion(string testDataName) : base(testDataName)
-		{
-			//ExcludeTestCaseRangeInclusive(1, 3);
-			//this.ExcludeTestCaseRangeInclusive(5, 50);
-		}
+		{}
 
 		public override string Process(string inStr) =>
 			TestTools.Process(inStr, (Func<long, long, long[][], long, long[][], long[]>)Solve);
@@ -45,16 +42,14 @@ namespace A3
 				reverseGraphEdges[v].Add(new Tuple<long, long>(u, w));
 			}
 
-			long[] dist, reverseDist, prev, reversePrev;
-			List<long> proc, reverseProc;
+			long[] dist, reverseDist;
+			bool[] proc, reverseProc;
 
 			int idx = 0;
 			foreach (var q in Queries)
 			{
 				dist = new long[NodeCount];
 				reverseDist = new long[NodeCount];
-				prev = new long[NodeCount];
-				reversePrev = new long[NodeCount];
 
 				for (int i = 0; i < NodeCount; i++)
 					dist[i] = reverseDist[i] = int.MaxValue;
@@ -71,8 +66,8 @@ namespace A3
 				dist[s] = 0;
 				reverseDist[t] = 0;
 
-				proc = new List<long>();
-				reverseProc = new List<long>();
+				proc = new bool[NodeCount];
+				reverseProc = new bool[NodeCount];
 
 				//BinaryHeap distance = new BinaryHeap(s, NodeCount);
 				//BinaryHeap reverseDistance = new BinaryHeap(t, NodeCount);
@@ -90,20 +85,21 @@ namespace A3
 				{
 					//long v = distance.ExtractMin();
 					long v = distanceHeap.Dequeue();
-					Process(v, graphEdges, dist, prev, proc, distanceHeap);
-					if (reverseProc.Contains(v))
+					Process(v, graphEdges, dist, proc, distanceHeap);
+					//if (reverseProc.Contains(v))
+					if(reverseProc[v])
 					{
-						result[idx] = ShortestPath(s, dist, prev, proc, t, reverseDist, reversePrev, reverseProc);
+						result[idx] = ShortestPath(s, dist, proc, t, reverseDist, reverseProc);
 						break;
 					}
 
 					//long reverseV = reverseDistanceHeap.ExtractMin();
 					long reverseV = reverseDistanceHeap.Dequeue();
-					Process(reverseV, reverseGraphEdges, reverseDist, reversePrev, reverseProc, reverseDistanceHeap);
-					if (proc.Contains(reverseV))
+					Process(reverseV, reverseGraphEdges, reverseDist, reverseProc, reverseDistanceHeap);
+					
+					if(proc[reverseV])
 					{
-						//result[idx] = ShortestPath(t, reverseDist, reversePrev, reverseProc, s, dist, prev, proc);
-						result[idx] = ShortestPath(s, dist, prev, proc, t, reverseDist, reversePrev, reverseProc);
+						result[idx] = ShortestPath(s, dist, proc, t, reverseDist, reverseProc);
 						break;
 					}
 				}
@@ -113,14 +109,14 @@ namespace A3
 			return result;
 		}
 
-		public void Process(long u, List<Tuple<long, long>>[] graphEdges, long[] dist, long[] prev, List<long> proc, SimplePriorityQueue<long, long> heap)
+		public void Process(long u, List<Tuple<long, long>>[] graphEdges, long[] dist, bool[] proc, SimplePriorityQueue<long, long> heap)
 		{
 			foreach (var e in graphEdges[u])
-				Relax(u, e, dist, prev, heap);
-			proc.Add(u);
+				Relax(u, e, dist, heap);
+			proc[u] = true;
 		}
 
-		public void Relax(long u, Tuple<long, long> e, long[] dist, long[] prev, SimplePriorityQueue<long, long> heap)
+		public void Relax(long u, Tuple<long, long> e, long[] dist, SimplePriorityQueue<long, long> heap)
 		{
 			long v = e.Item1;
 			long w = e.Item2;
@@ -128,24 +124,26 @@ namespace A3
 			if (dist[v] > dist[u] + w)
 			{
 				dist[v] = dist[u] + w;
-				prev[v] = u;
 				//heap.ChangePriority(v, dist[v]);
 				heap.UpdatePriority(v, dist[v]);
 			}
 		}
 
-		public long ShortestPath(long s, long[] dist, long[] prev, List<long> proc,
-								long t, long[] distR, long[] prevR, List<long> procR)
+		public long ShortestPath(long s, long[] dist, bool[] proc,
+								long t, long[] distR, bool[] procR)
 		{
 			long distance = int.MaxValue;
 			long uBest = 0;
 
-			foreach (var u in proc.Concat(procR))
+			for (int i = 0; i < proc.Length; i++)
 			{
-				if (dist[u] + distR[u] < distance)
+				if(proc[i] || procR[i])
 				{
-					uBest = u;
-					distance = dist[u] + distR[u];
+					if (dist[i] + distR[i] < distance)
+					{
+						uBest = i;
+						distance = dist[i] + distR[i];
+					}
 				}
 			}
 			return distance != int.MaxValue ? distance : -1;

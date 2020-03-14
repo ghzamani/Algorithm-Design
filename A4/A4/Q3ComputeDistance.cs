@@ -98,18 +98,18 @@ namespace A4
 
 				pi = new double[nodeCount];
 
-				if ((int)points[0][0] != points[0][0])
-				{
-					GeoCoordinate coordinate2 = new GeoCoordinate(points[destination][1], points[destination][0]);
-					for (int j = 0; j < nodeCount; j++)
-					{
-						GeoCoordinate coordinate1 = new GeoCoordinate(points[j][1], points[j][0]);
-						pi[j] = coordinate1.GetDistanceTo(coordinate2);
-						dist[j] = int.MaxValue;
-					}
-				}
+				//if ((int)points[0][0] != points[0][0])
+				//{
+				//	GeoCoordinate coordinate2 = new GeoCoordinate(points[destination][1], points[destination][0]);
+				//	for (int j = 0; j < nodeCount; j++)
+				//	{
+				//		GeoCoordinate coordinate1 = new GeoCoordinate(points[j][1], points[j][0]);
+				//		pi[j] = coordinate1.GetDistanceTo(coordinate2);
+				//		dist[j] = int.MaxValue;
+				//	}
+				//}
 
-				else
+				//else
 				{
 					for (int j = 0; j < nodeCount; j++)
 					{

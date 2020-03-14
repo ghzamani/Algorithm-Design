@@ -128,6 +128,11 @@ namespace A4
 				while (heap.Count != 0)
 				{
 					long u = heap.Dequeue();
+					visited[u] = true;
+
+					if (visited[destination])
+						return dist[destination] >= int.MaxValue ? -1 : dist[destination];
+
 					foreach (var edge in adjacencyList[u])
 					{
 						int v = (int)edge.V;
@@ -143,10 +148,8 @@ namespace A4
 							heap.UpdatePriority(v, dist[v] + pi[v]);
 						}
 					}
-					visited[u] = true;
 
-					if (visited[destination])
-						return dist[destination] >= int.MaxValue ? -1 : dist[destination];
+					
 				}
 
 				return -1;

@@ -113,7 +113,8 @@ namespace A4
 				{
 					for (int j = 0; j < nodeCount; j++)
 					{
-						pi[j] = Dist(points[destination], points[j]);
+						pi[j] = Math.Sqrt((points[destination][0] - points[j][0]) * (points[destination][0] - points[j][0]) 
+							+ (points[destination][1] - points[j][1]) * (points[destination][1] - points[j][1]));
 						dist[j] = int.MaxValue;
 					}
 				}
@@ -147,9 +148,7 @@ namespace A4
 							}
 							heap.UpdatePriority(v, dist[v] + pi[v]);
 						}
-					}
-
-					
+					}					
 				}
 
 				return -1;

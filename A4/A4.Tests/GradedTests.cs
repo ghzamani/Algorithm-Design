@@ -19,14 +19,14 @@ namespace A4.Tests
             RunTest(new Q1BuildingRoads("TD1"));
         }
 
-        [TestMethod()/*, Timeout(4000)*/]
+        [TestMethod(), Timeout(4000)]
         public void SolveTest_Q2Clustering()
         {
             RunTest(new Q2Clustering("TD2"));
         }
 
 
-        [TestMethod()/*, Timeout(30000)*/]
+        [TestMethod(), Timeout(30000)]
         public void SolveTest_Q3ComputeDistance()
         {
             RunTest(new Q3ComputeDistance("TD3"));

@@ -62,9 +62,6 @@ namespace A4
 			while (i != parent[i])
 				i = parent[i];
 			return i;
-			//if (i != parent[i])
-			//	parent[i] = Find(parent[i]);
-			//return parent[i];
 		}
 
 		public void Union (long i,long j)

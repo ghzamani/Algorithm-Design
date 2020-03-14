@@ -12,7 +12,7 @@ namespace A4
 {
 	public class Q3ComputeDistance : Processor
 	{
-		public Q3ComputeDistance(string testDataName) : base(testDataName) { /*ExcludeTestCaseRangeInclusive(11, 13);*/ }
+		public Q3ComputeDistance(string testDataName) : base(testDataName) { }
 
 		public static readonly char[] IgnoreChars = new char[] { '\n', '\r', ' ' };
 		public static readonly char[] NewLineChars = new char[] { '\n', '\r' };
@@ -98,20 +98,18 @@ namespace A4
 
 				pi = new double[nodeCount];
 
-				//if ((int)points[0][0] != points[0][0])
-				//{
-				//	GeoCoordinate coordinate2 = new GeoCoordinate(points[destination][1], points[destination][0]);
-				//	for (int j = 0; j < nodeCount; j++)
-				//	{
+				if ((int)points[0][0] != points[0][0])
+				{
+					GeoCoordinate coordinate2 = new GeoCoordinate(points[destination][1], points[destination][0]);
+					for (int j = 0; j < nodeCount; j++)
+					{
+						GeoCoordinate coordinate1 = new GeoCoordinate(points[j][1], points[j][0]);
+						pi[j] = coordinate1.GetDistanceTo(coordinate2);
+						dist[j] = int.MaxValue;
+					}
+				}
 
-				//		//pi[j] = Dist(points[destination], points[j]);
-				//		GeoCoordinate coordinate1 = new GeoCoordinate(points[j][1], points[j][0]);
-				//		pi[j] = coordinate1.GetDistanceTo(coordinate2);
-				//		dist[j] = int.MaxValue;
-				//	}
-				//}
-
-				//else
+				else
 				{
 					for (int j = 0; j < nodeCount; j++)
 					{

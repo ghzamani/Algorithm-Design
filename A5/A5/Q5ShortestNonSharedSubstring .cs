@@ -19,7 +19,7 @@ namespace A5
 
 		private string Solve(string text1, string text2)
 		{
-			if (text1.Length <= 400)
+			if (text1.Length <= 1800)
 			{
 				for (int i = 1; i < text1.Length; i++)
 				{

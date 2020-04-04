@@ -19,6 +19,18 @@ namespace A5
 
 		private string Solve(string text1, string text2)
 		{
+			if (text1.Length <= 400)
+			{
+				for (int i = 1; i < text1.Length; i++)
+				{
+					for (int j = 0; j <= text1.Length - i; j++)
+					{
+						if (!text2.Contains(text1.Substring(j, i)))
+							return text1.Substring(j, i);
+					}
+				}
+			}
+
 			string result = string.Empty;
 			Trie trie = new Trie(text1, text2);
 

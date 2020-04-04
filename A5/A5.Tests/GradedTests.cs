@@ -37,7 +37,7 @@ namespace A5.Tests
         }
 
         // [TestMethod(), Timeout(1200)]
-        [TestMethod(), Timeout(5500)]
+        [TestMethod(), Timeout(6000)]
         public void SolveTest_Q5ShortestNonSharedSubstring()
         {
             RunTest(new Q5ShortestNonSharedSubstring("TD5"));

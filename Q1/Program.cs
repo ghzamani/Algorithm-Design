@@ -12,10 +12,10 @@ namespace Q1
 		{
 			string a = Console.ReadLine();
 			string b = Console.ReadLine();
-			Console.WriteLine(HammingDist(a,b));
+			Console.WriteLine(HammingDist(a, b));
 		}
 
-		public static string HammingDist (string A, string B)
+		public static string HammingDist(string A, string B)
 		{
 			string result = string.Empty;
 			int dist = 0;
@@ -30,7 +30,7 @@ namespace Q1
 					}
 					else
 					{
-						result += B[i];						
+						result += B[i];
 					}
 					dist++;
 

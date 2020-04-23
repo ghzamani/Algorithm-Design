@@ -16,7 +16,16 @@ namespace Exam1
 
         public string Solve(string firstDNA, string secondDNA)
         {
-            throw new NotImplementedException();
+			for (int i = 0; i < firstDNA.Length; i++)
+			{
+				string str = string.Empty;
+				str += firstDNA.Substring(i);
+				str += firstDNA.Substring(0, firstDNA.Length - str.Length);
+
+				if (str == secondDNA)
+					return "1";
+			}
+			return "-1";
         }
     }
 }

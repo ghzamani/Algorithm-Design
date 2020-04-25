@@ -19,7 +19,7 @@ namespace A7
 
 		protected virtual long[] Solve(string text, long n, string[] patterns)
 		{
-			List<long> result = new List<long>();
+			//List<long> result = new List<long>();
 			HashSet<long> results = new HashSet<long>();
 
 			long[] suffixArray = Q2CunstructSuffixArray.BuildSuffixArray(text + "$");
@@ -63,7 +63,6 @@ namespace A7
 			while (min < max)
 			{
 				mid = (min + max) / 2;
-
 				if (string.Compare(pattern, text.Substring((int)suffixArray[mid])) == 1) //(pattern > text.Substring(suffixArray[mid]))
 					min = mid + 1;
 				else max = mid;				
@@ -82,7 +81,7 @@ namespace A7
 				}
 				else
 				{
-					if (string.Compare(pattern, text.Substring((int)suffixArray[mid])) == -1) //(pattern < text.Substring((int)suffixArray[mid]))
+					if (string.Compare(pattern, text.Substring((int)suffixArray[mid])) == -1) //(pattern < text.Substring(suffixArray[mid]))
 						max = mid;
 					else min = mid + 1;
 				}

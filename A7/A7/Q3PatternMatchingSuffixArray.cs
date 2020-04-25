@@ -20,6 +20,7 @@ namespace A7
 		protected virtual long[] Solve(string text, long n, string[] patterns)
 		{
 			List<long> result = new List<long>();
+			HashSet<long> results = new HashSet<long>();
 
 			long[] suffixArray = Q2CunstructSuffixArray.BuildSuffixArray(text + "$");
 			foreach (var pattern in patterns)
@@ -33,20 +34,24 @@ namespace A7
 
 				while (start < end) //if start > end -> pattern was not found
 				{
-					if (!result.Contains(suffixArray[start]))
-						result.Add(suffixArray[start]);
+					//if (!result.Contains(suffixArray[start]))
+					//	result.Add(suffixArray[start]);
+					results.Add(suffixArray[start]);
 					start++;
 				}
 
 				if (pattern.Length <= text.Length - suffixArray[start])
 				{
 					if (pattern == text.Substring((int)suffixArray[start], pattern.Length))
-						if (!result.Contains(suffixArray[start]))
-							result.Add(suffixArray[start]);
+						//if (!result.Contains(suffixArray[start]))
+						//	result.Add(suffixArray[start]);
+						results.Add(suffixArray[start]);
 				}
 			}
 
-			return result.Count != 0 ? result.ToArray() : new long[1] { -1 };
+			//return result.Count != 0 ? result.ToArray() : new long[1] { -1 };
+			return results.Count != 0 ? results.ToArray() : new long[1] { -1 };
+
 		}
 
 		public static long[] SuffixArrayPatternMatching(string text, string pattern, long[] suffixArray)

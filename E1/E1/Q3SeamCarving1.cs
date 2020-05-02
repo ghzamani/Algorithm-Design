@@ -7,45 +7,43 @@ using TestCommon;
 
 namespace Exam1
 {
-    public class Q3SeamCarving1 : Processor // Calculate Energy
-    {
-        public Q3SeamCarving1(string testDataName) : base(testDataName) { }
+	public class Q3SeamCarving1 : Processor // Calculate Energy
+	{
+		public Q3SeamCarving1(string testDataName) : base(testDataName) { }
 
-        public override string Process(string inStr)
-        {
+		public override string Process(string inStr)
+		{
 			// Parse input file
 			string[] rows = inStr.Split('\n');
 			int x = rows.Length;
 			int y = rows[0].Split('|').Length;
-			Color[,] data = new Color[x,y];
+			Color[,] data = new Color[x, y];
 
 			for (int i = 0; i < x; i++)
 			{
 				var column = rows[i].Split('|');
-				for(int j = 0; j < y; j++)
+				for (int j = 0; j < y; j++)
 				{
 					var colors = column[j].Split(',');
 					data[i, j] = Color.FromArgb(int.Parse(colors[0]), int.Parse(colors[1]), int.Parse(colors[2]));
 				}
 			}
-            var solved = Solve(data);
+			var solved = Solve(data);
 			string result = string.Empty;
 			for (int i = 0; i < x; i++)
 			{
 				for (int j = 0; j < y - 1; j++)
 				{
 					result += solved[i, j] + ",";
-
 				}
-				result += solved[i, y - 1] + "\n";				
+				result += solved[i, y - 1] + "\n";
 			}
-            // convert solved into output string
-            return result;
-        }
-            
+			// convert solved into output string
+			return result;
+		}
 
-        public double[,] Solve(Color[,] data)
-        {
+		public double[,] Solve(Color[,] data)
+		{
 			long h = data.GetLength(0);
 			long w = data.GetLength(1);
 			double[,] energies = new double[h, w];
@@ -65,7 +63,7 @@ namespace Exam1
 			}
 
 			return energies;
-        }
+		}
 		static double Delta2(Color[,] data, int x, int y, long w, long h, string direction)
 		{
 			double r;
@@ -85,9 +83,9 @@ namespace Exam1
 			b = B(data, x, y, w, h, "y");
 			return r * r + g * g + b * b;
 		}
-		static double R (Color[,] data, int x, int y, long w, long h, string direction)
+		static double R(Color[,] data, int x, int y, long w, long h, string direction)
 		{
-			if(direction == "y")
+			if (direction == "y")
 				return data[x + 1, y].R - data[x - 1, y].R;
 
 			return data[x, y + 1].R - data[x, y - 1].R;
@@ -108,15 +106,14 @@ namespace Exam1
 
 			return data[x, y + 1].B - data[x, y - 1].B;
 		}
-
 	}
 
-    public class Q3SeamCarving2 : Processor // Find Seam
-    {
-        public Q3SeamCarving2(string testDataName) : base(testDataName) { }
+	public class Q3SeamCarving2 : Processor // Find Seam
+	{
+		public Q3SeamCarving2(string testDataName) : base(testDataName) { }
 
-        public override string Process(string inStr)
-        {
+		public override string Process(string inStr)
+		{
 			// Parse input file
 			string[] rows = inStr.Split('\n');
 			int x = rows.Length;
@@ -128,11 +125,11 @@ namespace Exam1
 				var column = rows[k].Split(',');
 				for (int j = 0; j < y; j++)
 				{
-					data[k,j] = double.Parse(column[j].Trim());
+					data[k, j] = double.Parse(column[j].Trim());
 				}
 			}
 
-            var solved = Solve(data);
+			var solved = Solve(data);
 			string result = string.Empty;
 			int i;
 			for (i = 0; i < x - 1; i++)
@@ -146,13 +143,13 @@ namespace Exam1
 				result += solved[i] + ",";
 			}
 			result += solved[x + y - 1];
-            // convert solved into output string
-            return result;
-        }
+			// convert solved into output string
+			return result;
+		}
 
 
-        public int[] Solve(double[,] data)
-        {
+		public int[] Solve(double[,] data)
+		{
 			int[] vertical = VerticalSeam(data);
 			int[] horizontal = HorizontalSeam(data);
 			int[] seams = new int[vertical.Length + horizontal.Length];
@@ -168,13 +165,13 @@ namespace Exam1
 				k++;
 			}
 			return seams;
-        }
+		}
 		public static int[] VerticalSeam(double[,] data)
 		{
 			long h = data.GetLength(0);
 			long w = data.GetLength(1);
 			int[] result = new int[h];
-			
+
 			int idx = MinIdxVertical(data);
 			result[0] = result[1] = idx;
 			int i = 2;
@@ -182,9 +179,9 @@ namespace Exam1
 			{
 				idx = MinNeighborIdxVertical(data, i - 1, idx);
 				result[i] = idx;
-				i++;				
+				i++;
 			}
-			result[h - 1] = idx; 
+			result[h - 1] = idx;
 			return result;
 		}
 		public static int MinIdxVertical(double[,] data) //minimum of second row
@@ -245,7 +242,7 @@ namespace Exam1
 			double min = data[0, 1];
 			for (int i = 1; i < h; i++)
 			{
-				if (data[i , 1] < min)
+				if (data[i, 1] < min)
 				{
 					min = data[i, 1];
 					index = i;
@@ -269,21 +266,20 @@ namespace Exam1
 		}
 	}
 
-    public class Q3SeamCarving3 : Processor // Remove Seam
-    {
-        public Q3SeamCarving3(string testDataName) : base(testDataName) { }
+	public class Q3SeamCarving3 : Processor // Remove Seam
+	{
+		public Q3SeamCarving3(string testDataName) : base(testDataName) { }
 
-        public override string Process(string inStr)
-        {
+		public override string Process(string inStr)
+		{
 			// Parse input file
 			var input = inStr.Split('\n');
 			int h = int.Parse(input[0]);
 			int w = input[1].Split(',').Length;
-			int n = int.Parse(input[0]);
 
 			double[,] data = new double[h, w];
 			int i = 0;
-			while(i < n)
+			while (i < h)
 			{
 				var row = input[i + 1].Split(',');
 				for (int j = 0; j < row.Length; j++)
@@ -293,15 +289,19 @@ namespace Exam1
 				i++;
 			}
 
-			i += 2;
-			var removes = input[i].Split(':', ',');
-			int[] indexes = new int[removes.Length - 1];
-			direction d = removes[0] == "h" ? direction.horizontal : direction.vertical;
-			for ( i = 1; i < removes.Length; i++)
+			int n = int.Parse(input[++i].Trim());
+
+			i++;
+			var removesLine = input[i].Split(':', ',');
+			int[] toRemoveIndexes = new int[removesLine.Length - 1];
+			direction d = removesLine[0] == "h" ? direction.horizontal : direction.vertical;
+			for (i = 1; i < removesLine.Length; i++)
 			{
-				indexes[i - 1] = int.Parse(removes[i].Trim());
+				toRemoveIndexes[i - 1] = int.Parse(removesLine[i].Trim());
 			}
-			var solved = Solve(data, indexes, d);
+
+			var solved = Solve(data, toRemoveIndexes, d);
+
 			h = solved.GetLength(0);
 			w = solved.GetLength(1);
 
@@ -310,84 +310,61 @@ namespace Exam1
 			{
 				for (int j = 0; j < w - 1; j++)
 				{
-					if ((int)solved[i, j] == solved[i, j])
-					{
-						result += solved[i, j] + ".00" + ",";
-					}
-					else 
-					{
-						if((int)solved[i, j] - solved[i, j] == -0.5 ||  solved[i, j] == 228.1)
-							result += solved[i, j] + "0" + ",";
-						else result += solved[i, j] + ","; }
-					}
-				if ((int)solved[i, w - 1] == solved[i, w - 1])
-				{
-					result += solved[i, w - 1] + ".00" + "\n";
+					result += String.Format("{0:0.00}", solved[i, j]) + ",";
 				}
-				else
-				{
-					if ((int)solved[i, w-1] - solved[i, w-1] == -0.5 || solved[i, w - 1] == 228.1)
-						result += solved[i, w - 1] + "0" + "\n";
-					else result += solved[i, w - 1] + "\n"; }
+				result += String.Format("{0:0.00}", solved[i, w - 1]) + "\n";
 			}
-            // convert solved into output string
-            return result;
-        }
+			// convert solved into output string
+			return result;
+		}
 		public enum direction
 		{
 			vertical,
 			horizontal
 		}
 
-        public double[,] Solve(double[,] data, int[] removes, direction d)
-        {
+		public double[,] Solve(double[,] data, int[] removes, direction d)
+		{
 			long h = data.GetLength(0);
 			long w = data.GetLength(1);
 			double[,] result;
 
-			
+
 			if (d == direction.vertical)
 			{
-				int k = 0;
-				
 				result = new double[h, w - 1];
 				for (int i = 0; i < h; i++)
 				{
 					int column = 0;
 					for (int j = 0; j < w; j++)
 					{
-						if (j != removes[k])
+						if (j != removes[i])
 						{
 							result[i, column] = data[i, j];
 							column++;
 						}
 					}
-					k++;
 				}
-				
 			}
 
 			else
 			{
 				result = new double[h - 1, w];
-				int k = 0;
 				for (int j = 0; j < w; j++)
 				{
 					int row = 0;
 					for (int i = 0; i < h; i++)
 					{
-						if (i != removes[k])
+						if (i != removes[j])
 						{
 							result[row, j] = data[i, j];
 							row++;
 						}
 					}
-					k++;
 				}
 			}
 
-
 			return result;
 		}
-    }
+	}
 }

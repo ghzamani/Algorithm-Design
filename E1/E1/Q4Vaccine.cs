@@ -8,7 +8,7 @@ namespace Exam1
 {
     public class Q4Vaccine : Processor
     {
-        public Q4Vaccine(string testDataName) : base(testDataName) { this.ExcludeTestCaseRangeInclusive(33, 106); }
+        public Q4Vaccine(string testDataName) : base(testDataName) { this.ExcludeTestCaseRangeInclusive(32, 106); }
 
         public override string Process(string inStr) =>
             TestTools.Process(inStr, (Func<string, string, string>)Solve);

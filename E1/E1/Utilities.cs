@@ -29,7 +29,7 @@ namespace Exam1
         public static void SavePhoto(Color[,] img, string path, string name, char direction)
         {
             var bmp = ConvertToBitmap(img, direction);
-            bmp.Save(path + name + ".jpg");
+            bmp.Save(path + "\\" + name + ".jpg");
         }
 
         /// <summary>

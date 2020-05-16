@@ -9,6 +9,7 @@ namespace A9
 	{
 		public Q2OptimalDiet(string testDataName) : base(testDataName)
 		{
+			ExcludeTestCases(8, 22);
 		}
 
 		public override string Process(string inStr) =>

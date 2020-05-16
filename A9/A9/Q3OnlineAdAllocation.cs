@@ -9,21 +9,21 @@ namespace A9
     {
 
         public Q3OnlineAdAllocation(string testDataName) : base(testDataName)
-        {
-        }
+        {  }
 
         public override string Process(string inStr) =>
             TestTools.Process(inStr, (Func<int, int, double[,], String>)Solve);
 
 		public static string[] leftSidedCol;
-		public string Solve(int c, int v, double[,] matrix1) //c =3 , v =2 tedad vars
+		public static int artificialsCount;
+		public string Solve(int c, int v, double[,] matrix1)
         {
 			string result = string.Empty;
 
 			double[,] table = MakeTable(c, v, matrix1);
 
 			int? entering = EnteringRow(table);
-			int leaving;
+			int leaving = 0;
 			while (entering.HasValue)
 			{
 				double min = double.MaxValue;
@@ -38,13 +38,73 @@ namespace A9
 						}
 					}
 				}
+
+				//if a negative item was found in last row but no leaving was found -> infinitely solutions
+				if(min == double.MaxValue) 
+				{
+					return "Infinity";
+				}
+
+				leftSidedCol[leaving] = AddToLeftCol(v, c, artificialsCount, entering.Value);
+				Elimination(ref table, leaving, entering.Value);
+
+				entering = EnteringRow(table);
 			}
+
+			double[] answer = new double[v];
+			for (int i = 0; i < leftSidedCol.Length; i++)
+			{
+				//if value of an "a" was positive -> no solution
+				if(leftSidedCol[i][0] == 'a')
+				{
+					if (table[i, table.GetLength(1) - 1] > 0)
+						return "No Solution";
+				}
+
+				if(leftSidedCol[i][0] == 'x')
+				{
+					int index = int.Parse(leftSidedCol[i].Substring(1));
+					double val = table[i, table.GetLength(1) - 1];
+
+					if (Math.Abs((int)val - val) < 0.25)
+					{
+						answer[index] = (int)val;
+					}
+					else
+					{
+						if (Math.Abs((int)val - val) >= 0.75)
+						{
+							answer[index] = (int)val;
+							if (val < 0)
+								answer[index] -= 1;
+							else answer[index] += 1;
+						}
+
+						else
+						{
+							answer[index] = (int)val;
+
+							if (val < 0)
+								answer[index] -= 0.5;
+							else answer[index] += 0.5;
+						}
+					}
+				}
+			}
+
+			result += "Bounded Solution" + "\n";
+
+			for (int i = 0; i < answer.Length; i++)
+			{
+				result += answer[i] + " ";
+			}
+
 			return result;
 		}
 
 		public static double[,] MakeTable(int c, int v, double[,] matrix1)
 		{
-			int artificialsCount = 0;
+			artificialsCount = 0;
 			for (int i = 0; i < c; i++)
 			{
 				if (matrix1[i, v] < 0)
@@ -107,7 +167,7 @@ namespace A9
 			return table;
 		}
 
-		//if the minimum valud of last row isn't negative -> return null		
+		//if the minimum value of last row isn't negative -> return null		
 		public static int? EnteringRow(double[,] matrix) //ممکنه تغییر نیاز داشته باشه
 		{
 			int lastRowidx = matrix.GetLength(0) - 1;
@@ -127,73 +187,53 @@ namespace A9
 			return null;
 		}
 
-
-		public static long variablesCount;
-		public double[] Solve(long MATRIX_SIZE, ref double[,] matrix)
+		public static string AddToLeftCol (int vars, int sCount, int aCount, int i)
 		{
-			double[] result = new double[MATRIX_SIZE];
-			variablesCount = MATRIX_SIZE;
-
-			for (int i = 0; i < MATRIX_SIZE; i++)
+			if (i < vars)
 			{
-				GaussianElimination(ref matrix, i);
+				return $"x{i}";
 			}
 
-			for (int i = 0; i < MATRIX_SIZE; i++)
+			else
 			{
-				result[i] = matrix[i, MATRIX_SIZE];
+				if (i < vars + sCount)
+				{
+					return $"s{i - vars}";
+				}
 
+				else
+				{
+					return $"a{i - vars + sCount}";
+				}
 			}
-			return result;
 		}
 
-		//matrix[i,i] must be 1, matrix[i, other columns] = 0
-		//returns false if the whole last column is 0
-		public static void GaussianElimination(ref double[,] matrix, int i)
-		{
-			int j = i;
-			while (matrix[j, i] == 0)
-			{
-				j++;
-				if (j >= variablesCount)
-					return;
-			}
 
-			if (j != i)
-			{
-				Swap(ref matrix, i, j);
-			}
-
-			for (int row = 0; row < variablesCount; row++)
+		//matrix[leaving, entering] must be 1, matrix[i, entering] = 0
+		public static void Elimination(ref double[,] matrix, int row, int col)
+		{	
+			for (int i = 0; i < matrix.GetLength(0); i++)
 			{
 				if (row == i)
 					continue;
 
-				double c = matrix[row, i] / matrix[i, i] * -1;
-				for (int col = 0; col <= variablesCount; col++)
+				double c = matrix[i,col] / matrix[row,col] * -1;
+				for (int j = 0; j < matrix.GetLength(1); j++)
 				{
-					matrix[row, col] += c * matrix[i, col];
+					matrix[i, j] += c * matrix[row, j];
 				}
 			}
 
-			if (matrix[i, i] != 1)
+			if (matrix[row, col] != 1)
 			{
-				for (int k = 0; k <= variablesCount; k++)
+				for (int k = 0; k < matrix.GetLength(1); k++)
 				{
-					if (k == i)
+					if (k == col)
 						continue;
 
-					matrix[i, k] /= matrix[i, i];
+					matrix[row, k] /= matrix[row, col];
 				}
-				matrix[i, i] = 1;
-			}
-		}
-
-		public static void Swap(ref double[,] matrix, int i, int j)
-		{
-			for (int k = 0; k <= variablesCount; k++)
-			{
-				(matrix[i, k], matrix[j, k]) = (matrix[j, k], matrix[i, k]);
+				matrix[row, col] = 1;
 			}
 		}
 	}

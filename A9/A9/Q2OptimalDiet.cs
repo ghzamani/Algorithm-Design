@@ -8,9 +8,7 @@ namespace A9
 	public class Q2OptimalDiet : Processor
 	{
 		public Q2OptimalDiet(string testDataName) : base(testDataName)
-		{
-			ExcludeTestCases(8, 22);
-		}
+		{ }
 
 		public override string Process(string inStr) =>
 			TestTools.Process(inStr, (Func<int, int, double[,], String>)Solve);
@@ -84,7 +82,7 @@ namespace A9
 							}
 							if (d >= max)
 							{
-								max = d;
+								max = Math.Round(d, 5);
 								resultPoint = ans;
 							}
 						}

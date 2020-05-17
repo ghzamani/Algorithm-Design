@@ -31,7 +31,7 @@ namespace A9
 				{
 					if (table[i, entering.Value] > 0)
 					{
-						if(table[i,table.GetLength(1) - 1] / table[i,entering.Value] < min)
+						if(table[i, table.GetLength(1) - 1] / table[i, entering.Value] < min)
 						{
 							min = table[i, table.GetLength(1) - 1] / table[i, entering.Value];
 							leaving = i;
@@ -168,15 +168,15 @@ namespace A9
 		}
 
 		//if the minimum value of last row isn't negative -> return null		
-		public static int? EnteringRow(double[,] matrix) //ممکنه تغییر نیاز داشته باشه
+		public static int? EnteringRow(double[,] matrix)
 		{
 			int lastRowidx = matrix.GetLength(0) - 1;
 			double min = matrix[lastRowidx, 0];
 			int idx = 0;
 
-			for (int i = 1; i < matrix.GetLength(1) - 1; i++) //momkene -1 ezafe bashe
+			for (int i = 1; i < matrix.GetLength(1) - 1; i++)
 			{
-				if (matrix[lastRowidx, i] < min) //ممکنه منفی ترین عدد اگه توی کانست ها باشه نشه انتخاب بشه
+				if (matrix[lastRowidx, i] < min)
 				{
 					min = matrix[lastRowidx, i];
 					idx = i;

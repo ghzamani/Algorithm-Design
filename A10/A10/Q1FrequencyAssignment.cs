@@ -19,10 +19,7 @@ namespace A10
 
 			//boolean variable number of each node
 			long[][] variableNums = new long[V][];
-			//for (int i = 0; i < V; i++)
-			//{
-			//}
-
+			
 			//define 3 bool for each node
 			//then for each node -> exactly one color
 			for (int i = 0; i < V; i++)

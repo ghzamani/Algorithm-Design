@@ -41,8 +41,7 @@ namespace A10
 						{
 							if(A[i][nonZeroIndexes[0]] * x > b[i])
 							{
-								if(!CNF.Contains(str + " 0"))
-									CNF.Add(str + " 0");
+								CNF.Add(str);
 							}
 							str = $"-{nonZeroIndexes[0] + 1}";
 						}
@@ -56,8 +55,7 @@ namespace A10
 							{
 								if(A[i][nonZeroIndexes[0]] * x + A[i][nonZeroIndexes[1]] * y > b[i])
 								{
-									if(!CNF.Contains(str + str2 + " 0"))
-										CNF.Add(str + str2 + " 0");
+									CNF.Add(str + str2);
 								}
 								str2 = $" -{nonZeroIndexes[1] + 1}";
 							}
@@ -76,8 +74,7 @@ namespace A10
 								{
 									if (A[i][nonZeroIndexes[0]] * x + A[i][nonZeroIndexes[1]] * y + A[i][nonZeroIndexes[2]] * z > b[i])
 									{
-										if(!CNF.Contains(str + str2 + str3 + " 0"))
-											CNF.Add(str + str2 + str3 + " 0");
+										CNF.Add(str + str2 + str3);
 									}
 									str3 = $" -{nonZeroIndexes[2] + 1}";
 								}

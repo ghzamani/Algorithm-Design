@@ -33,9 +33,9 @@ namespace A10
 				CNF.Add(string.Join(" ", nums));
 
 				//at most one color
-				for (int j = 0; j < nums.Length - 1; j++)
+				for (int j = 0; j < 2; j++)
 				{
-					for (int k = j + 1; k < nums.Length; k++)
+					for (int k = j + 1; k < 3; k++)
 					{
 						CNF.Add($"-{nums[j]} -{nums[k]}");
 					}
@@ -52,7 +52,7 @@ namespace A10
 				long[] nums2 = variableNums[v];
 
 				//can have at most one of each color
-				for (int j = 0; j < nums1.Length; j++)
+				for (int j = 0; j < 3; j++)
 				{
 					CNF.Add($"-{nums1[j]} -{nums2[j]}");
 				}

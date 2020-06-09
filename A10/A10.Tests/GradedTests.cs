@@ -13,7 +13,7 @@ namespace A10.Tests
     [TestClass()]
     public class GradedTests
     {
-        [TestMethod(), Timeout(1200)]
+        [TestMethod(), Timeout(2000)]
         public void SolveTest_Q1FrequencyAssignment()
         {
             RunTest(new Q1FrequencyAssignment("TD1"));

@@ -25,17 +25,15 @@ namespace A11.Tests
             RunTest(new Q2FunParty("TD2"));
         }
 
-        [TestMethod(), Timeout(3000)]
+        [TestMethod(), Timeout(5000)]
         public void SolveTest_Q3SchoolBus()
         {
-			Assert.Inconclusive();
             RunTest(new Q3SchoolBus("TD3"));
         }
 
         [TestMethod(), Timeout(2000)]
         public void SolveTest_Q4RescheduleExam()
         {
-			//Assert.Inconclusive();
 			RunTest(new Q4RescheduleExam("TD4"));
         }
 

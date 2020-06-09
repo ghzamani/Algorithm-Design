@@ -22,13 +22,6 @@ namespace A11
 		public List<long[]> cnf;
 		public virtual char[] Solve(long nodeCount, char[] colors, long[][] edges)
         {
-			//Tuple<bool, long[]> t = new Q1CircuitDesign(" ").Solve(3, 3, new long[3][]
-			//{
-			//	new long[2]{-1,-2},
-			//	new long[2]{-1,-3},
-			//	new long[2]{-2,-3}
-			//});
-
 			//x1 red , x2 green, x3 blue
 			//x1 x2 x3 node 1
 			cnf = new List<long[]>();

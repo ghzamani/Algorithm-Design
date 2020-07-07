@@ -4,10 +4,11 @@ using TestCommon;
 
 namespace E2
 {
-    public class Q1MaxflowVertexCapacity : Processor
+	public class Q1MaxflowVertexCapacity : Processor
     {
-        public Q1MaxflowVertexCapacity(string testDataName) : base(testDataName)
-        {}
+		public Q1MaxflowVertexCapacity(string testDataName) : base(testDataName)
+		{
+		}
 
         public override string Process(string inStr) =>
             TestTools.Process(inStr, (Func<long, long, long[][],long[] , long, long, long>)Solve);
@@ -18,13 +19,13 @@ namespace E2
             long startNode , long endNode)
         {
 			nodesWeight = nodeWeight;
-			//List<long>[] adjList = new List<long>[nodeCount];
-            throw new NotImplementedException();  
+			return Solve(nodeCount, edgeCount, edges, startNode, endNode);
         }
 
 
 		public static long[] parent;
-		public virtual long Solve(long nodeCount, long edgeCount, long[][] edges)
+		public virtual long Solve(long nodeCount, long edgeCount, long[][] edges,
+								long startNode, long endNode)
 		{
 			//adjacency matrix of graph
 			long[,] graph = new long[nodeCount, nodeCount];
@@ -54,8 +55,8 @@ namespace E2
 			long maxFlow = 0;
 
 			long u;
-			long s = 0;
-			long t = nodeCount - 1;
+			long s = startNode - 1;
+			long t = endNode - 1;
 			while (BFS(residual, s, t)) //find shortest path in residual graph between s and t
 			{
 				//maximum flow of the path
@@ -63,12 +64,17 @@ namespace E2
 				while (parent[t] != t)
 				{
 					u = parent[t];
-					if (residual[u, t] < flow)
-						flow = residual[u, t];
+					if (nodesWeight[u] > 0 && nodesWeight[t] > 0)
+					{
+						if (residual[u, t] < flow || nodesWeight[u] < flow || nodesWeight[t] < flow)
+						{
+							flow = Math.Min(Math.Min(residual[u, t], nodesWeight[u]), nodesWeight[t]);
+						}
+					}
 					t = parent[t];
 				}
 
-				t = nodeCount - 1;
+				t = endNode - 1;
 				//update residual capacities of the edges and 
 				//reverse edges along the path				
 				while (parent[t] != t)
@@ -76,11 +82,13 @@ namespace E2
 					u = parent[t];
 					residual[u, t] -= flow;
 					residual[t, u] += flow;
+					//nodesWeight[u] -= flow;
+					nodesWeight[t] -= flow;
 					t = parent[t];
 				}
-
+				nodesWeight[t] -= flow;
 				maxFlow += flow;
-				t = nodeCount - 1;
+				t = endNode - 1;
 			}
 			return maxFlow;
 		}
@@ -99,7 +107,8 @@ namespace E2
 				long u = queue.Dequeue();
 				for (int v = 0; v < parent.Length; v++)
 				{
-					if (!visited[v] && residual[u, v] != 0)
+					if (!visited[v] && residual[u, v] != 0 
+						&& nodesWeight[u] != 0 && nodesWeight[v] != 0)
 					{
 						queue.Enqueue(v);
 						parent[v] = u;

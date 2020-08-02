@@ -6,11 +6,11 @@ namespace A7
 {
 	public class Q3MaximizingArithmeticExpression 
 	{
-		static void Main(string[] args)
-		{
-			string input = Console.ReadLine();
-			Console.WriteLine(Solve(input));
-		}
+		//static void Main(string[] args)
+		//{
+		//	string input = Console.ReadLine();
+		//	Console.WriteLine(Solve(input));
+		//}
 
 		public static long Solve (string expression)
 		{

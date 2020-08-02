@@ -7,16 +7,16 @@ namespace A6
 {
     public class Q5LCSOfThree
     {
-		static void Main(string[] args)
-		{
-			Console.ReadLine();
-			var seq1 = Console.ReadLine().Split(' ').Select(x => long.Parse(x)).ToArray();
-			Console.ReadLine();
-			var seq2 = Console.ReadLine().Split(' ').Select(x => long.Parse(x)).ToArray();
-			Console.ReadLine();
-			var seq3 = Console.ReadLine().Split(' ').Select(x => long.Parse(x)).ToArray();
-			Console.WriteLine(Solve(seq1,seq2,seq3));
-		}
+		//static void Main(string[] args)
+		//{
+		//	Console.ReadLine();
+		//	var seq1 = Console.ReadLine().Split(' ').Select(x => long.Parse(x)).ToArray();
+		//	Console.ReadLine();
+		//	var seq2 = Console.ReadLine().Split(' ').Select(x => long.Parse(x)).ToArray();
+		//	Console.ReadLine();
+		//	var seq3 = Console.ReadLine().Split(' ').Select(x => long.Parse(x)).ToArray();
+		//	Console.WriteLine(Solve(seq1,seq2,seq3));
+		//}
 
 		public static long Solve(long[] seq1, long[] seq2, long[] seq3)
         {

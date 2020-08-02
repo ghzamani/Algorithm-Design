@@ -7,20 +7,20 @@ namespace A5
 {
     public class Q1BinarySearch
     {
-		static void Main(string[] args)
-		{
-			var input = Console.ReadLine().Split(' ');
-			long aLength = long.Parse(input[0]);
-			long[] a = input.Select(x => long.Parse(x)).Skip(1).ToArray();
+		//static void Main(string[] args)
+		//{
+		//	var input = Console.ReadLine().Split(' ');
+		//	long aLength = long.Parse(input[0]);
+		//	long[] a = input.Select(x => long.Parse(x)).Skip(1).ToArray();
 
-			input = Console.ReadLine().Split(' ');
-			long bLength = long.Parse(input[0]);
-			long[] b = input.Select(x => long.Parse(x)).Skip(1).ToArray();
+		//	input = Console.ReadLine().Split(' ');
+		//	long bLength = long.Parse(input[0]);
+		//	long[] b = input.Select(x => long.Parse(x)).Skip(1).ToArray();
 
-			long[] result = Solve(a, b);
-			foreach (var num in result)
-				Console.Write(num + " ");
-		}
+		//	long[] result = Solve(a, b);
+		//	foreach (var num in result)
+		//		Console.Write(num + " ");
+		//}
 		public static long[] Solve(long []a, long[] b) 
         {
 			for(int i = 0; i < b.Length; i++)

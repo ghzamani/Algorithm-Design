@@ -8,22 +8,22 @@ namespace week3
 {
 	class Program
 	{
-		static void Main(string[] args)
-		{
-			long d = long.Parse(Console.ReadLine());
-			long miles = long.Parse(Console.ReadLine());
+		//static void Main(string[] args)
+		//{
+		//	long d = long.Parse(Console.ReadLine());
+		//	long miles = long.Parse(Console.ReadLine());
 
-			long stopsCount = long.Parse(Console.ReadLine());
-			long[] stops = new long[stopsCount];
+		//	long stopsCount = long.Parse(Console.ReadLine());
+		//	long[] stops = new long[stopsCount];
 
-			var input = Console.ReadLine().Split(' ');
+		//	var input = Console.ReadLine().Split(' ');
 
-			for (int i = 0; i < stopsCount; i++)
-			{
-				stops[i] = long.Parse(input[i]);
-			}
+		//	for (int i = 0; i < stopsCount; i++)
+		//	{
+		//		stops[i] = long.Parse(input[i]);
+		//	}
 			
-		}
+		//}
 
 		//x hamoon stops
 		//n hamoon stopsCount
